@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-
-const API_URL = (import.meta as any).env?.VITE_API_URL ?? 'http://localhost:5000/api';
+import { API_URL } from "@/lib/api";
 
 const Admin = () => {
 

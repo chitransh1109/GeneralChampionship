@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
-const API_URL = 'http://localhost:5001/api';
+import { API_URL } from "@/lib/api";
 
 const SportDetail = () => {
   const { sport } = useParams();
