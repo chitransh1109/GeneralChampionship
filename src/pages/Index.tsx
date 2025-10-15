@@ -96,27 +96,27 @@ const Index = () => {
 
         {/* Content */}
         <div className="relative z-10 text-center px-4 max-w-5xl">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-primary-foreground animate-navbar-fade">
-            General Championship <span className="bg-gradient-to-r from-[hsl(var(--gradient-accent-start))] via-[hsl(var(--gradient-highlight-start))] to-[hsl(var(--gradient-highlight-end))] bg-clip-text text-transparent">2025</span>
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white drop-shadow-2xl animate-navbar-fade">
+            General Championship <span className="bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400 bg-clip-text text-transparent">2025</span>
           </h1>
           
-          <p className="text-2xl md:text-3xl text-accent font-semibold mb-4 animate-pulse-glow">
+          <p className="text-2xl md:text-3xl text-yellow-300 font-semibold mb-4 drop-shadow-lg">
             Premier Sports Tournament
           </p>
           
-          <p className="text-lg md:text-xl text-primary-foreground/90 mb-8 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-white/95 mb-8 max-w-3xl mx-auto drop-shadow-lg">
             Excellence in competitive sports since 2025. Join us in celebrating athletic achievement across multiple disciplines, from cricket to athletics, basketball to chess.
           </p>
 
           <div className="flex flex-wrap gap-4 justify-center">
             <Link to="/sports">
-              <Button className="bg-gradient-to-r from-[hsl(var(--gradient-accent-start))] to-[hsl(var(--gradient-accent-end))] hover:opacity-90 px-8 py-6 text-lg animate-button-pop group">
+              <Button className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold px-8 py-6 text-lg animate-button-pop group shadow-xl">
                 View All Sports
                 <ArrowRight className="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
             <Link to="/fixtures">
-              <Button variant="outline" className="border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary px-8 py-6 text-lg backdrop-blur-sm animate-button-pop" style={{ animationDelay: "0.2s" }}>
+              <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-6 text-lg backdrop-blur-sm animate-button-pop shadow-xl" style={{ animationDelay: "0.2s" }}>
                 See Fixtures
               </Button>
             </Link>

@@ -29,10 +29,10 @@ const Fixtures = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      <section className="pt-32 pb-16 bg-gradient-to-r from-[hsl(var(--gradient-primary-start))] via-[hsl(var(--gradient-primary-mid))] to-[hsl(var(--gradient-primary-end))] text-primary-foreground">
+      <section className="pt-32 pb-16 bg-gradient-to-r from-[hsl(var(--gradient-primary-start))] via-[hsl(var(--gradient-primary-mid))] to-[hsl(var(--gradient-primary-end))]">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl font-bold mb-4">Championship Fixtures</h1>
-          <p className="text-xl opacity-90">View all upcoming matches and championship schedules</p>
+          <h1 className="text-5xl font-bold mb-4 text-white drop-shadow-lg">Championship Fixtures</h1>
+          <p className="text-xl text-white/90 drop-shadow-md">View all upcoming matches and championship schedules</p>
         </div>
       </section>
 
