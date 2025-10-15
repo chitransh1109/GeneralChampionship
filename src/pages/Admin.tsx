@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { API_URL } from "@/lib/api";
+import { TEAM_AVATARS, getRandomAvatar } from "@/lib/avatars";
 
 const Admin = () => {
 
@@ -25,7 +26,7 @@ const Admin = () => {
   const SPORTS = [
     "Cricket","Football","Basketball","Volleyball","Swimming","Chess","Boxing","Athletics","Badminton"
   ];
-  const [teamForm, setTeamForm] = useState({ name: "", sport: "", logo: "" });
+  const [teamForm, setTeamForm] = useState({ name: "", sport: "", logo: getRandomAvatar() });
   const [matchForm, setMatchForm] = useState({ sport: "", team1: "", team2: "", date: "", venue: "" });
   const [scoreForm, setScoreForm] = useState({ matchId: "", team1Score: 0, team2Score: 0 });
   const [editMatchId, setEditMatchId] = useState<string | null>(null);
@@ -68,7 +69,7 @@ const Admin = () => {
       });
       if (res.ok) {
         toast({ title: "Success!", description: "Team added" });
-        setTeamForm({ name: "", sport: "", logo: "" });
+        setTeamForm({ name: "", sport: "", logo: getRandomAvatar() }); // Get new random avatar for next team
         fetchTeams();
       } else {
         const err = await res.json().catch(() => ({}));
@@ -256,7 +257,26 @@ const Admin = () => {
                           {SPORTS.map(s => <option key={s} value={s}>{s}</option>)}
                         </select>
                       </div>
-                      <div><Label>Logo URL</Label><Input value={teamForm.logo} onChange={(e) => setTeamForm({ ...teamForm, logo: e.target.value })} /></div>
+                      <div>
+                        <Label>Team Avatar</Label>
+                        <div className="mt-2 flex items-center gap-4">
+                          <img src={teamForm.logo} alt="Team avatar" className="w-16 h-16 rounded-full border-2 border-primary" />
+                          <Button type="button" variant="outline" onClick={() => setTeamForm({ ...teamForm, logo: getRandomAvatar() })}>
+                            Random Avatar
+                          </Button>
+                        </div>
+                        <div className="mt-3 grid grid-cols-6 gap-2 max-h-40 overflow-y-auto p-2 border rounded-lg">
+                          {TEAM_AVATARS.map((avatar, idx) => (
+                            <img 
+                              key={idx} 
+                              src={avatar} 
+                              alt={`Avatar ${idx + 1}`}
+                              className={`w-12 h-12 rounded-full cursor-pointer hover:ring-2 hover:ring-primary transition-all ${teamForm.logo === avatar ? 'ring-2 ring-primary' : 'opacity-70'}`}
+                              onClick={() => setTeamForm({ ...teamForm, logo: avatar })}
+                            />
+                          ))}
+                        </div>
+                      </div>
                       <Button type="submit" className="w-full">Add Team</Button>
                     </form>
                   </div>
@@ -265,9 +285,12 @@ const Admin = () => {
                     <div className="space-y-4 max-h-96 overflow-y-auto">
                       {teams.map((team) => (
                         <div key={team._id} className="flex justify-between items-center border-b pb-3">
-                          <div>
-                            <p className="font-bold">{team.name}</p>
-                            <p className="text-sm text-muted-foreground">{team.sport} • W:{team.wins} L:{team.losses} D:{team.draws} • {team.points}pts</p>
+                          <div className="flex items-center gap-3">
+                            {team.logo && <img src={team.logo} alt={team.name} className="w-10 h-10 rounded-full" />}
+                            <div>
+                              <p className="font-bold">{team.name}</p>
+                              <p className="text-sm text-muted-foreground">{team.sport} • W:{team.wins} L:{team.losses} D:{team.draws} • {team.points}pts</p>
+                            </div>
                           </div>
                           <Button variant="destructive" size="sm" onClick={() => handleDeleteTeam(team._id)}>Delete</Button>
                         </div>
@@ -283,19 +306,54 @@ const Admin = () => {
                     <form onSubmit={handleAddMatch} className="space-y-4">
                       <div>
                         <Label>Sport *</Label>
-                        <select value={matchForm.sport} onChange={(e) => setMatchForm({ ...matchForm, sport: e.target.value })} className="w-full mt-1 px-4 py-2 border border-input rounded-lg bg-background" required>
+                        <select value={matchForm.sport} onChange={(e) => setMatchForm({ ...matchForm, sport: e.target.value, team1: "", team2: "" })} className="w-full mt-1 px-4 py-2 border border-input rounded-lg bg-background" required>
                           <option value="">Select Sport</option>
                           {SPORTS.map(s => <option key={s} value={s}>{s}</option>)}
                         </select>
                       </div>
                       <div className="grid md:grid-cols-2 gap-4">
                         <div>
-                          <Label>Team 1 Name *</Label>
-                          <Input value={matchForm.team1} onChange={(e) => setMatchForm({ ...matchForm, team1: e.target.value })} placeholder="Enter team 1 name" required disabled={!matchForm.sport} />
+                          <Label>Team 1 *</Label>
+                          <select 
+                            value={matchForm.team1} 
+                            onChange={(e) => setMatchForm({ ...matchForm, team1: e.target.value })} 
+                            className="w-full mt-1 px-4 py-2 border border-input rounded-lg bg-background" 
+                            required 
+                            disabled={!matchForm.sport}
+                          >
+                            <option value="">Select Team 1</option>
+                            {teams
+                              .filter(team => team.sport === matchForm.sport)
+                              .filter(team => team._id !== matchForm.team2)
+                              .map(team => (
+                                <option key={team._id} value={team._id}>
+                                  {team.name}
+                                </option>
+                              ))}
+                          </select>
+                          {matchForm.sport && teams.filter(t => t.sport === matchForm.sport).length === 0 && (
+                            <p className="text-sm text-amber-600 mt-1">No teams found for {matchForm.sport}. Add teams first.</p>
+                          )}
                         </div>
                         <div>
-                          <Label>Team 2 Name *</Label>
-                          <Input value={matchForm.team2} onChange={(e) => setMatchForm({ ...matchForm, team2: e.target.value })} placeholder="Enter team 2 name" required disabled={!matchForm.sport} />
+                          <Label>Team 2 *</Label>
+                          <select 
+                            value={matchForm.team2} 
+                            onChange={(e) => setMatchForm({ ...matchForm, team2: e.target.value })} 
+                            className="w-full mt-1 px-4 py-2 border border-input rounded-lg bg-background" 
+                            required 
+                            disabled={!matchForm.sport}
+                          >
+                            <option value="">Select Team 2</option>
+                            {teams
+                              .filter(team => team.sport === matchForm.sport)
+                              .filter(team => team._id !== matchForm.team1)
+                              .map(team => (
+                                <option key={team._id} value={team._id}>
+                                  {team.name}
+                                </option>
+                              ))}
+                          </select>
                         </div>
                       </div>
                       <div><Label>Date & Time *</Label><Input type="datetime-local" value={matchForm.date} onChange={(e) => setMatchForm({ ...matchForm, date: e.target.value })} required /></div>

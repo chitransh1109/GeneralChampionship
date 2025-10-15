@@ -96,27 +96,27 @@ const Index = () => {
 
         {/* Content */}
         <div className="relative z-10 text-center px-4 max-w-5xl">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white drop-shadow-2xl animate-navbar-fade">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold mb-4 md:mb-6 text-white drop-shadow-2xl animate-navbar-fade">
             General Championship <span className="bg-gradient-to-r from-yellow-300 via-yellow-400 to-orange-400 bg-clip-text text-transparent">2025</span>
           </h1>
           
-          <p className="text-2xl md:text-3xl text-yellow-300 font-semibold mb-4 drop-shadow-lg">
+          <p className="text-xl sm:text-2xl md:text-3xl text-yellow-300 font-semibold mb-3 md:mb-4 drop-shadow-lg">
             Premier Sports Tournament
           </p>
           
-          <p className="text-lg md:text-xl text-white/95 mb-8 max-w-3xl mx-auto drop-shadow-lg">
+          <p className="text-sm sm:text-base md:text-xl text-white/95 mb-6 md:mb-8 max-w-3xl mx-auto drop-shadow-lg px-2">
             Excellence in competitive sports since 2025. Join us in celebrating athletic achievement across multiple disciplines, from cricket to athletics, basketball to chess.
           </p>
 
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link to="/sports">
-              <Button className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold px-8 py-6 text-lg animate-button-pop group shadow-xl">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
+            <Link to="/sports" className="w-full sm:w-auto">
+              <Button className="w-full sm:w-auto bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg animate-button-pop group shadow-xl">
                 View All Sports
-                <ArrowRight className="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 transform group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-            <Link to="/fixtures">
-              <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-6 text-lg backdrop-blur-sm animate-button-pop shadow-xl" style={{ animationDelay: "0.2s" }}>
+            <Link to="/fixtures" className="w-full sm:w-auto">
+              <Button variant="outline" className="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-blue-600 px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg backdrop-blur-sm animate-button-pop shadow-xl" style={{ animationDelay: "0.2s" }}>
                 See Fixtures
               </Button>
             </Link>
@@ -125,30 +125,30 @@ const Index = () => {
       </section>
 
       {/* Championship Information */}
-      <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
+      <section className="py-12 md:py-16 bg-gradient-to-br from-gray-50 to-blue-50">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-8 bg-card rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-list-fade-in">
-              <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center">
-                <Trophy className="w-10 h-10 text-white" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+            <div className="text-center p-4 md:p-8 bg-card rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-list-fade-in">
+              <div className="w-14 h-14 md:w-20 md:h-20 mx-auto mb-3 md:mb-4 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center">
+                <Trophy className="w-7 h-7 md:w-10 md:h-10 text-white" />
               </div>
-              <h3 className="text-4xl font-bold mb-2 text-foreground">25+</h3>
-              <p className="text-muted-foreground">Championship Categories</p>
+              <h3 className="text-2xl md:text-4xl font-bold mb-1 md:mb-2 text-foreground">25+</h3>
+              <p className="text-sm md:text-base text-muted-foreground">Championship Categories</p>
             </div>
 
-            <div className="text-center p-8 bg-card rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-list-fade-in" style={{ animationDelay: "0.1s" }}>
-              <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center">
-                <Users className="w-10 h-10 text-white" />
+            <div className="text-center p-4 md:p-8 bg-card rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-list-fade-in" style={{ animationDelay: "0.1s" }}>
+              <div className="w-14 h-14 md:w-20 md:h-20 mx-auto mb-3 md:mb-4 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center">
+                <Users className="w-7 h-7 md:w-10 md:h-10 text-white" />
               </div>
-              <h3 className="text-4xl font-bold mb-2 text-foreground">15</h3>
-              <p className="text-muted-foreground">International Teams</p>
+              <h3 className="text-2xl md:text-4xl font-bold mb-1 md:mb-2 text-foreground">15</h3>
+              <p className="text-sm md:text-base text-muted-foreground">International Teams</p>
             </div>
 
-            <div className="text-center p-8 bg-card rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-list-fade-in" style={{ animationDelay: "0.2s" }}>
-              <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center">
-                <DollarSign className="w-10 h-10 text-white" />
+            <div className="text-center p-4 md:p-8 bg-card rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 animate-list-fade-in" style={{ animationDelay: "0.2s" }}>
+              <div className="w-14 h-14 md:w-20 md:h-20 mx-auto mb-3 md:mb-4 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center">
+                <DollarSign className="w-7 h-7 md:w-10 md:h-10 text-white" />
               </div>
-              <h3 className="text-4xl font-bold mb-2 text-foreground">$2M</h3>
+              <h3 className="text-2xl md:text-4xl font-bold mb-1 md:mb-2 text-foreground">$2M</h3>
               <p className="text-muted-foreground">Prize Pool</p>
             </div>
           </div>
