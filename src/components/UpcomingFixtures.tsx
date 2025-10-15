@@ -1,122 +1,58 @@
 import { Calendar, MapPin, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
+import { API_URL } from "@/lib/api";
 
-interface Fixture {
-  id: number;
+interface Match {
+  _id: string;
   sport: string;
   date: string;
-  homeTeam: string;
-  awayTeam: string;
+  team1: { name: string };
+  team2: { name: string };
   venue: string;
+  status: string;
 }
 
-const mockFixtures: Fixture[] = [
-  {
-    id: 1,
-    sport: "Football",
-    date: "2025-11-05",
-    homeTeam: "Eagles",
-    awayTeam: "Warriors",
-    venue: "Championship Stadium",
-  },
-  {
-    id: 2,
-    sport: "Basketball",
-    date: "2025-11-08",
-    homeTeam: "Tigers",
-    awayTeam: "Lions",
-    venue: "Arena Center",
-  },
-  {
-    id: 3,
-    sport: "Cricket",
-    date: "2025-11-10",
-    homeTeam: "Knights",
-    awayTeam: "Dragons",
-    venue: "Cricket Grounds",
-  },
-  {
-    id: 4,
-    sport: "Volleyball",
-    date: "2025-11-12",
-    homeTeam: "Sharks",
-    awayTeam: "Dolphins",
-    venue: "Sports Complex",
-  },
-  {
-    id: 5,
-    sport: "Swimming",
-    date: "2025-11-15",
-    homeTeam: "Wave Riders",
-    awayTeam: "Aqua Stars",
-    venue: "Olympic Pool",
-  },
-  {
-    id: 6,
-    sport: "Athletics",
-    date: "2025-11-18",
-    homeTeam: "Sprinters",
-    awayTeam: "Marathoners",
-    venue: "Track Stadium",
-  },
-  {
-    id: 7,
-    sport: "Basketball",
-    date: "2025-11-20",
-    homeTeam: "Panthers",
-    awayTeam: "Wolves",
-    venue: "Arena Center",
-  },
-  {
-    id: 8,
-    sport: "Football",
-    date: "2025-11-22",
-    homeTeam: "Falcons",
-    awayTeam: "Hawks",
-    venue: "Championship Stadium",
-  },
-  {
-    id: 9,
-    sport: "Tennis",
-    date: "2025-11-25",
-    homeTeam: "Aces",
-    awayTeam: "Servers",
-    venue: "Tennis Court Complex",
-  },
-  {
-    id: 10,
-    sport: "Boxing",
-    date: "2025-11-28",
-    homeTeam: "Fighters",
-    awayTeam: "Champions",
-    venue: "Fight Arena",
-  },
-  {
-    id: 11,
-    sport: "Chess",
-    date: "2025-12-01",
-    homeTeam: "Grandmasters",
-    awayTeam: "Strategy Kings",
-    venue: "Tournament Hall",
-  },
-  {
-    id: 12,
-    sport: "Badminton",
-    date: "2025-12-05",
-    homeTeam: "Shuttlers",
-    awayTeam: "Net Masters",
-    venue: "Indoor Arena",
-  },
-];
-
 const UpcomingFixtures = () => {
+  const [matches, setMatches] = useState<Match[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchUpcomingMatches();
+  }, []);
+
+  const fetchUpcomingMatches = async () => {
+    try {
+      const res = await fetch(`${API_URL}/matches`);
+      const data = await res.json();
+      // Filter for upcoming matches (scheduled status) and sort by date
+      const upcomingMatches = data
+        .filter((m: Match) => m.status === 'scheduled')
+        .sort((a: Match, b: Match) => new Date(a.date).getTime() - new Date(b.date).getTime())
+        .slice(0, 12); // Get only the next 12 matches
+      setMatches(upcomingMatches);
+    } catch (err) {
+      console.error('Error fetching matches:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
       weekday: "long",
       month: "long",
       day: "numeric",
+    });
+  };
+
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -133,44 +69,59 @@ const UpcomingFixtures = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {mockFixtures.slice(0, 12).map((fixture) => (
-            <div
-              key={fixture.id}
-              className="bg-card rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300 animate-list-fade-in"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <span className="px-3 py-1 bg-primary text-primary-foreground rounded-full text-sm font-semibold">
-                  {fixture.sport}
-                </span>
-                <div className="flex items-center gap-1 text-muted-foreground text-sm">
-                  <Calendar className="w-4 h-4" />
-                  <span>{formatDate(fixture.date)}</span>
-                </div>
-              </div>
-
-              <div className="text-center mb-4">
-                <div className="flex items-center justify-center gap-4">
-                  <span className="text-lg font-bold">{fixture.homeTeam}</span>
-                  <span className="text-2xl font-bold text-muted-foreground">vs</span>
-                  <span className="text-lg font-bold">{fixture.awayTeam}</span>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-center gap-2 text-muted-foreground mb-4">
-                <MapPin className="w-4 h-4" />
-                <span className="text-sm">{fixture.venue}</span>
-              </div>
-
-              <div className="flex gap-2">
-                <Button className="flex-1 bg-gradient-to-r from-[hsl(var(--gradient-primary-start))] to-[hsl(var(--gradient-primary-end))] hover:opacity-90">
-                  Get Tickets
-                </Button>
-                <Button variant="outline" className="flex-1 border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-                  More Info
-                </Button>
-              </div>
+          {loading ? (
+            <div className="col-span-full text-center py-12">
+              <p className="text-muted-foreground">Loading upcoming fixtures...</p>
             </div>
-          ))}
+          ) : matches.length === 0 ? (
+            <div className="col-span-full text-center py-12">
+              <p className="text-muted-foreground">No upcoming fixtures scheduled yet. Check back soon!</p>
+            </div>
+          ) : (
+            matches.map((match) => (
+              <div
+                key={match._id}
+                className="bg-card rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300 animate-list-fade-in"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <span className="px-3 py-1 bg-primary text-primary-foreground rounded-full text-sm font-semibold">
+                    {match.sport}
+                  </span>
+                  <div className="flex flex-col items-end gap-1 text-muted-foreground text-sm">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-4 h-4" />
+                      <span>{formatDate(match.date)}</span>
+                    </div>
+                    <span className="text-xs">{formatTime(match.date)}</span>
+                  </div>
+                </div>
+
+                <div className="text-center mb-4">
+                  <div className="flex items-center justify-center gap-4">
+                    <span className="text-lg font-bold">{match.team1?.name || 'Team 1'}</span>
+                    <span className="text-2xl font-bold text-muted-foreground">vs</span>
+                    <span className="text-lg font-bold">{match.team2?.name || 'Team 2'}</span>
+                  </div>
+                </div>
+
+                {match.venue && (
+                  <div className="flex items-center justify-center gap-2 text-muted-foreground mb-4">
+                    <MapPin className="w-4 h-4" />
+                    <span className="text-sm">{match.venue}</span>
+                  </div>
+                )}
+
+                <div className="flex gap-2">
+                  <Button className="flex-1 bg-gradient-to-r from-[hsl(var(--gradient-primary-start))] to-[hsl(var(--gradient-primary-end))] hover:opacity-90">
+                    Get Tickets
+                  </Button>
+                  <Button variant="outline" className="flex-1 border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                    More Info
+                  </Button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
 
         <div className="text-center">
